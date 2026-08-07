@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+<title>Roll'd SA Manual</title>
+<style>
+  :root{
+    --green-dark:#0c4b36;
+    --green:#0e5c42;
+    --green-light:#e8f2ec;
+    --red:#e2231a;
+    --cream:#faf7f1;
+    --text:#1c2620;
+    --muted:#6b7a71;
+    --gold:#c9a24b;
+    --vh:1dvh;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  html,body{overscroll-behavior-y:none;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--cream);
+    color:var(--text);
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  /* ============ HERO (landing page) ============ */
+  .cover{
+    height:100dvh;
+    min-height:560px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background:
+      radial-gradient(circle at 88% 6%, rgba(226,35,26,0.35), transparent 45%),
+      radial-gradient(circle at 8% 90%, rgba(201,162,75,0.20), transparent 40%),
+      linear-gradient(190deg,#0a3626 0%, #071f16 65%, #05140e 100%);
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    padding:28px 26px 40px;
+    scroll-snap-align:start;
+  }
+  .cover .deco{
+    position:absolute;
+    font-size:340px;
+    line-height:1;
+    opacity:0.10;
+    filter:blur(1px);
+    pointer-events:none;
+    user-select:none;
+  }
+  .cover .deco.d1{ top:-70px; left:-90px; transform:rotate(-18deg); }
+  .cover .deco.d2{ bottom:-110px; right:-100px; font-size:300px; transform:rotate(12deg); opacity:0.09; }
+  .cover .deco.d3{ top:38%; right:-60px; font-size:180px; transform:rotate(-8deg); opacity:0.08; }
+
+  .hamburger{
+    position:fixed;
+    top:calc(18px + env(safe-area-inset-top));
+    right:18px;
+    z-index:999;
+    width:50px; height:50px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:rgba(255,255,255,0.2);
+    touch-action:manipulation;
+    pointer-events:auto;
+  }
+  .hamburger:active{ background:rgba(0,0,0,0.55); }
+
+  .cover-eyebrow{
+    font-size:12px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:#fff;
+    opacity:0.8;
+    font-weight:700;
+    margin-bottom:16px;
+  }
+  .cover-title{
+    font-size:clamp(46px,15vw,80px);
+    font-weight:800;
+    line-height:0.98;
+    letter-spacing:-1px;
+  }
+  .cover-title .accent{ color:var(--red); }
+  .cover-sub{
+    margin-top:16px;
+    font-size:14px;
+    line-height:1.6;
+    opacity:0.9;
+    max-width:340px;
+  }
+  .cover-label{
+    position:absolute;
+    top:calc(72px + env(safe-area-inset-top));
+    right:20px;
+    font-size:12px;
+    color:rgba(255,255,255,0.65);
+    font-weight:600;
+  }
+  .swipe-hint{
+    margin-top:30px;
+    text-align:left;
+    font-size:12px;
+    letter-spacing:1.5px;
+    color:#fff;
+    opacity:0.85;
+  }
+  .swipe-hint .arrow{
+    display:block;
+    margin-top:4px;
+    animation:bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); opacity:.6;}
+    50%{ transform:translateY(8px); opacity:1;}
+  }
+
+  /* ============ NAV DRAWER ============ */
+  .scrim{
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(5,10,8,0.55);
+    backdrop-filter:blur(3px);
+    z-index:1000;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .scrim.open{ opacity:1; pointer-events:auto; }
+
+  .drawer{
+    position:fixed;
+    top:0; right:0; bottom:0;
+    width:82vw;
+    max-width:340px;
+    background:rgba(17,17,17,0.97);
+    border-radius:22px 0 0 22px;
+    z-index:1001;
+    padding:30px 22px;
+    transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .drawer.open{ transform:translateX(0); }
+  .drawer-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    border:none;
+    color:#fff;
+    font-size:15px;
+  }
+  .drawer-title{
+    font-size:22px;
+    font-weight:800;
+    color:#fff;
+  }
+  .drawer-sub{
+    margin-top:4px;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.5);
+    font-weight:600;
+  }
+  .drawer-list{
+    margin-top:22px;
+    list-style:none;
+  }
+  .drawer-list > li{
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .drawer-row{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:14px 2px;
+    width:100%;
+    background:none;
+    border:none;
+    text-align:left;
+  }
+  .drawer-row .badge{
+    width:38px; height:38px;
+    border-radius:11px;
+    background:rgba(255,255,255,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    flex:0 0 auto;
+  }
+  .drawer-row .label{
+    flex:1;
+    font-size:14.5px;
+    font-weight:700;
+    color:#fff;
+  }
+  .drawer-row .chev{
+    color:rgba(255,255,255,0.4);
+    font-size:15px;
+    transition:transform .2s ease;
+  }
+  li.open .drawer-row .chev{ transform:rotate(90deg); }
+  .sub-list{
+    list-style:none;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  li.open .sub-list{ max-height:260px; }
+  .sub-list a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:11px 2px 11px 51px;
+    font-size:13.5px;
+    color:rgba(255,255,255,0.8);
+    font-weight:600;
+  }
+  .sub-list a::before{
+    content:"–";
+    color:rgba(255,255,255,0.35);
+    margin-right:-2px;
+  }
+  .sub-list a:active{ color:#fff; }
+
+  /* ============ PROGRESS DOTS ============ */
+  .dots{
+    position:fixed;
+    top:50%;
+    right:10px;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    z-index:60;
+  }
+  .dots.hidden{ display:none; }
+  .dots a{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.45);
+    transition:background .2s, transform .2s;
+  }
+  .dots a.active{
+    background:var(--gold);
+    transform:scale(1.5);
+  }
+
+  /* ============ SWIPE FEED (cover cards per build card) ============ */
+  .feed{
+    scroll-snap-type:y mandatory;
+    overflow-y:auto;
+    height:100dvh;
+  }
+  .feed-card{
+    height:100dvh;
+    min-height:560px;
+    scroll-snap-align:start;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:26px 26px 100px;
+    position:relative;
+    color:#fff;
+    background:linear-gradient(165deg,var(--green-dark) 0%, var(--green) 100%);
+  }
+  .feed-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 90% 100%, rgba(226,35,26,0.25), transparent 55%);
+    pointer-events:none;
+  }
+  .feed-card .num{
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:2px;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .feed-card .emoji-big{
+    font-size:44px;
+    margin-bottom:6px;
+  }
+  .feed-card h2{
+    font-size:clamp(26px,8vw,38px);
+    font-weight:800;
+    line-height:1.08;
+    margin-bottom:14px;
+  }
+  .feed-card .teaser{
+    font-size:15.5px;
+    line-height:1.5;
+    opacity:0.95;
+    max-width:460px;
+    margin-bottom:18px;
+  }
+  .feed-card .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:26px;
+  }
+  .feed-card .tag{
+    font-size:12px;
+    font-weight:600;
+    background:rgba(255,255,255,0.14);
+    padding:6px 11px;
+    border-radius:999px;
+  }
+  .feed-card .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    align-self:flex-start;
+    background:var(--gold);
+    color:#3a2c00;
+    font-weight:800;
+    font-size:14px;
+    padding:12px 20px;
+    border-radius:999px;
+  }
+  /* alternate card background tone for visual rhythm */
+  .feed-card:nth-child(even){
+    background:linear-gradient(165deg,#0a3f2e 0%, #0d5640 100%);
+  }
+
+  /* ============ DETAIL HEADER ============ */
+  .detail-head{
+    padding:44px 20px 8px;
+    max-width:720px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .detail-head .eyebrow{
+    font-size:12px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--red);
+    font-weight:800;
+  }
+  .detail-head h2{
+    font-size:clamp(22px,6vw,28px);
+    font-weight:800;
+    color:var(--green-dark);
+    margin-top:4px;
+  }
+  .detail-head p{
+    color:var(--muted);
+    font-size:13.5px;
+    margin-top:8px;
+  }
+
+  /* ============ LEGEND ============ */
+  .legend{
+    max-width:720px;
+    margin:20px auto 0;
+    padding:0 20px;
+  }
+  .legend-box{
+    background:#fff;
+    border:1px solid #eee4d3;
+    border-radius:16px;
+    padding:18px 18px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .legend-row{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .legend-row .ic{
+    font-size:20px;
+    flex:0 0 auto;
+    width:32px;
+    text-align:center;
+  }
+  .legend-row .tx b{
+    display:block;
+    font-size:13.5px;
+    color:var(--green-dark);
+  }
+  .legend-row .tx span{
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  /* ============ DETAIL CARDS ============ */
+  section.card-section{
+    max-width:720px;
+    margin:24px auto;
+    padding:0 16px;
+    scroll-margin-top:14px;
+  }
+  .section-inner{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(12,75,54,0.12);
+    border:1px solid #eee4d3;
+  }
+  .section-bar{
+    background:var(--green-dark);
+    color:#fff;
+    padding:16px 18px;
+  }
+  .section-bar .row1{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .section-bar .icon{
+    font-size:22px;
+    background:rgba(255,255,255,0.12);
+    border-radius:10px;
+    padding:5px 9px;
+  }
+  .section-bar .title{
+    font-size:16px;
+    font-weight:800;
+    line-height:1.25;
+  }
+  .section-bar .title small{
+    display:block;
+    font-size:10.5px;
+    font-weight:600;
+    opacity:0.75;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+  .facts{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .fact{
+    background:rgba(255,255,255,0.14);
+    font-size:11px;
+    font-weight:700;
+    padding:5px 9px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .fact.gold{ background:var(--gold); color:#3a2c00; }
+
+  .img-wrap{
+    background:#f4f0e6;
+    padding:10px;
+    text-align:center;
+    position:relative;
+  }
+  .img-wrap img{
+    border-radius:8px;
+    margin:0 auto;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+  }
+  .img-wrap .zoom-hint{
+    position:absolute;
+    bottom:18px;
+    right:20px;
+    background:rgba(12,75,54,0.85);
+    color:#fff;
+    font-size:10.5px;
+    font-weight:700;
+    padding:5px 9px;
+    border-radius:999px;
+    pointer-events:none;
+  }
+  .section-footer{
+    padding:12px 18px 16px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .section-footer .back{
+    display:inline-block;
+    margin-top:8px;
+    font-weight:700;
+    color:var(--green-dark);
+    font-size:12.5px;
+  }
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox{
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(8,16,12,0.94);
+    display:none;
+    z-index:1100;
+    overflow:auto;
+    padding:0;
+  }
+  .lightbox.open{ display:block; }
+  .lightbox img{
+    width:100%;
+    display:block;
+  }
+  .lightbox-close{
+    position:fixed;
+    top:calc(14px + env(safe-area-inset-top));
+    right:16px;
+    background:#fff;
+    color:var(--green-dark);
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    font-size:19px;
+    font-weight:800;
+    z-index:1101;
+  }
+  .lightbox-hint{
+    position:fixed;
+    bottom:calc(14px + env(safe-area-inset-bottom));
+    left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    font-size:11.5px;
+    opacity:0.75;
+    z-index:1101;
+    background:rgba(0,0,0,0.4);
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  footer.page-footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:11.5px;
+    padding:26px 20px 20px;
+    line-height:1.5;
+  }
+
+  @media (min-width:720px){
+    .feed-card{ padding-left:56px; padding-right:56px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="top"></div>
+
+<button type="button" class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('open');">☰</button>
+
+<!-- ===================== SWIPE FEED ===================== -->
+<div class="feed" id="feed">
+
+  <div class="cover feed-card">
+    <span class="deco d1">🥢</span>
+    <span class="deco d2">🍜</span>
+    <span class="deco d3">🌶️</span>
+    <div class="cover-label">Tổng Quan</div>
+    <div class="cover-eyebrow">V10 · June 2026 · 10 Build Cards</div>
+    <div class="cover-title">Roll'd<br><span class="accent">SA</span><br>Manual</div>
+    <div class="cover-sub">Fresh Rolls · Bánh Mì · Bao<br>Noodle Soups · Salad Bowls · Dressing Station</div>
+    <div class="swipe-hint">VUỐT ĐỂ BẮT ĐẦU<span class="arrow">↓</span></div>
+  </div>
+
+  <div class="feed-card" id="c1">
+    <div class="num">Card 1 · 10</div>
+    <div class="emoji-big">🥗</div>
+    <h2>SESAME & LOW CARB ROLLS</h2>
+    <p class="teaser">🥢 Sesame-crusted rice paper rolls — 7 proteins, one exact 110g target every time.</p>
+    <div class="tags">
+      <span class="tag">🍚 Rice Paper</span>
+      <span class="tag">🥒 Cucumber</span>
+      <span class="tag">🐔🦆🐟 7 Proteins</span>
+      <span class="tag">⚖️ 110g · 12.5cm</span>
+    </div>
+    <a class="cta" href="#d1">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c2">
+    <div class="num">Card 2 · 10</div>
+    <div class="emoji-big">🌯</div>
+    <h2>ORIGINAL FRESH ROLLS</h2>
+    <p class="teaser">🥑 The OG lineup — avocado, prawn, beef & more, same tight build on every roll.</p>
+    <div class="tags">
+      <span class="tag">🥑 Avocado</span>
+      <span class="tag">🍤 Prawn</span>
+      <span class="tag">🥩 Beef</span>
+      <span class="tag">⚖️ 110g · 12.5cm</span>
+    </div>
+    <a class="cta" href="#d2">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c3">
+    <div class="num">Card 3 · 10</div>
+    <div class="emoji-big">🥖</div>
+    <h2>BÁNH MÌ</h2>
+    <p class="teaser">🥖 Build from the bread up — mayo, pate, pickled carrot, protein, finish with chilli & herbs.</p>
+    <div class="tags">
+      <span class="tag">🧈 Pate</span>
+      <span class="tag">🥕 Pickled Carrot</span>
+      <span class="tag">🌶️ Chilli Mayo</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d3">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c4">
+    <div class="num">Card 4 · 10</div>
+    <div class="emoji-big">🥟</div>
+    <h2>BAO</h2>
+    <p class="teaser">🥟 Steamed bao, stacked fast — sauce first, protein last, 7 fillings to choose from.</p>
+    <div class="tags">
+      <span class="tag">🥗 Mixed Salad</span>
+      <span class="tag">🍯 Hoisin / Chilli Mayo</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d4">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c5">
+    <div class="num">Card 5 · 10</div>
+    <div class="emoji-big">🍜</div>
+    <h2>NOODLE SOUPS — BOWLS</h2>
+    <p class="teaser">🍜 Phở, Bún Bò Huế & curry — broth, protein, noodles, dressed exactly to spec.</p>
+    <div class="tags">
+      <span class="tag">🍜 Phở Noodles</span>
+      <span class="tag">🌶️ BBH Paste</span>
+      <span class="tag">🍛 Curry Paste</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d5">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c6">
+    <div class="num">Card 6 · 10</div>
+    <div class="emoji-big">🥤</div>
+    <h2>NOODLE SOUPS — CUPS</h2>
+    <p class="teaser">🥤 Takeaway-size soups — same 7 builds, broth filled to 1cm from the rim.</p>
+    <div class="tags">
+      <span class="tag">🥤 Cup Format</span>
+      <span class="tag">📏 Fill Line</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d6">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c7">
+    <div class="num">Card 7 · 10</div>
+    <div class="emoji-big">🥙</div>
+    <h2>GỎI — VIET SALAD BOWLS</h2>
+    <p class="teaser">🥙 Crunchy Viet salad, 9 proteins, crab crackers finished on top every time.</p>
+    <div class="tags">
+      <span class="tag">🦀 Crab Crackers</span>
+      <span class="tag">🧴 Nuoc Mam</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d7">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c8">
+    <div class="num">Card 8 · 10</div>
+    <div class="emoji-big">🍲</div>
+    <h2>BÚN — NOODLE SALAD BOWLS</h2>
+    <p class="teaser">🍲 Vermicelli, fresh veg, 8 proteins — nuoc mam always served on the side.</p>
+    <div class="tags">
+      <span class="tag">🍜 Bún Noodles</span>
+      <span class="tag">🥬 Lettuce & Carrot</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d8">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c9">
+    <div class="num">Card 9 · 10</div>
+    <div class="emoji-big">🍚</div>
+    <h2>CƠM — RICE SALAD BOWLS</h2>
+    <p class="teaser">🍚 Jasmine rice bowls, same 8 proteins, mixed salad finished on top.</p>
+    <div class="tags">
+      <span class="tag">🍚 Jasmine Rice</span>
+      <span class="tag">🧴 Nuoc Mam</span>
+      <span class="tag">⬆️ Bottom → Up</span>
+    </div>
+    <a class="cta" href="#d9">View Full Card ›</a>
+  </div>
+
+  <div class="feed-card" id="c10">
+    <div class="num">Card 10 · 10</div>
+    <div class="emoji-big">🧂</div>
+    <h2>DRESSING STATION</h2>
+    <p class="teaser">🧂 Every garnish, every format — bowl vs cup portions side by side, one reference.</p>
+    <div class="tags">
+      <span class="tag">🧂 12 Formats</span>
+      <span class="tag">🌿 Herbs & Shallots</span>
+    </div>
+    <a class="cta" href="#d10">View Full Card ›</a>
+  </div>
+
+</div>
+
+<div class="dots" id="dots">
+  <a href="#c1" data-t="c1"></a>
+  <a href="#c2" data-t="c2"></a>
+  <a href="#c3" data-t="c3"></a>
+  <a href="#c4" data-t="c4"></a>
+  <a href="#c5" data-t="c5"></a>
+  <a href="#c6" data-t="c6"></a>
+  <a href="#c7" data-t="c7"></a>
+  <a href="#c8" data-t="c8"></a>
+  <a href="#c9" data-t="c9"></a>
+  <a href="#c10" data-t="c10"></a>
+</div>
+
+<!-- ===================== DETAIL PAGES ===================== -->
+<div id="details">
+
+<div class="detail-head">
+  <div class="eyebrow">Full Build Cards</div>
+  <h2>Read Every Gram, Right</h2>
+  <p>Tap any image to zoom — pinch to read exact weights on the line.</p>
+</div>
+
+<div class="legend">
+  <div class="legend-box">
+    <div class="legend-row">
+      <div class="ic">⬆️</div>
+      <div class="tx"><b>Start from bottom, up</b><span>Bánh mì, bao, soups, gỏi, bún & cơm are built stacking from the base container upward — always follow that order.</span></div>
+    </div>
+    <div class="legend-row">
+      <div class="ic">🔀</div>
+      <div class="tx"><b>Top line / Bottom line</b><span>Fresh rolls use two placement lines on the rice paper before rolling — see the numbered example on each card.</span></div>
+    </div>
+    <div class="legend-row">
+      <div class="ic">🔍</div>
+      <div class="tx"><b>Tap to zoom</b><span>Every card image below is high-res — tap it and pinch to check exact gram weights.</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="card-section" id="d1">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🥗</div>
+        <div class="title">Fresh Rolls — Sesame & Low Carb<small>Card 1 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">110g</div>
+        <div class="fact gold">12.5cm</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-01.jpg')">
+      <img src="images/page-01.jpg" alt="Build Card - Fresh Rolls Sesame & Low Carb" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      BBQ Chicken · LG Chilli Chicken · Duck · Tofu · Low Carb Tofu · Low Carb Poached Chicken · Low Carb Crispy Flathead
+      <a class="back" href="#c1">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d2">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🌯</div>
+        <div class="title">Fresh Rolls — Original<small>Card 2 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">110g</div>
+        <div class="fact gold">12.5cm</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-02.jpg')">
+      <img src="images/page-02.jpg" alt="Build Card - Fresh Rolls Original" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      Avocado · Crispy Chicken & Avo · Poached Chicken & Avo · Crispy Flathead & Avo · Garlic Prawn · Lemongrass Beef · Pork & Prawn
+      <a class="back" href="#c2">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d3">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🥖</div>
+        <div class="title">Bánh Mì<small>Card 3 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-03.jpg')">
+      <img src="images/page-03.jpg" alt="Build Card - Banh Mi" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      BBQ Chicken · Roast Pork & Crackling · Lemongrass Beef · Crispy Chicken · LG Chilli Chicken · Tofu (V) · Crispy Flathead
+      <a class="back" href="#c3">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d4">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🥟</div>
+        <div class="title">Bao<small>Card 4 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-04.jpg')">
+      <img src="images/page-04.jpg" alt="Build Card - Bao" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      BBQ / LG Chilli Chicken · Lemongrass Beef · Roast Pork & Crackling · Crispy Chicken · Crispy Prawns · Tofu (V) · Crispy Flathead
+      <a class="back" href="#c4">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d5">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🍜</div>
+        <div class="title">Noodle Soups — Bowls<small>Card 5 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-05.jpg')">
+      <img src="images/page-05.jpg" alt="Build Card - Noodle Soups Bowls" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      Phở Rare Beef · Poached Chicken · Mixed Beef & Chicken · Seafood · Mushroom & Tofu · BBH Spicy Beef · Curry Chicken
+      <a class="back" href="#c5">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d6">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🥤</div>
+        <div class="title">Noodle Soups — Cups<small>Card 6 of 10 · Takeaway</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">7 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-06.jpg')">
+      <img src="images/page-06.jpg" alt="Build Card - Noodle Soups Cups" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      Same 7 soups, cup-size portions · Fill broth to 1cm from the top of the cup
+      <a class="back" href="#c6">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d7">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🥙</div>
+        <div class="title">Gỏi — Viet Salad Bowls<small>Card 7 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">9 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-07.jpg')">
+      <img src="images/page-07.jpg" alt="Build Card - Goi Viet Salad Bowls" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      Poached Chicken · Lemongrass Beef · Roast Pork & Prawn · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Prawns · Tofu (V) · Crispy Flathead
+      <a class="back" href="#c7">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d8">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🍲</div>
+        <div class="title">Bún — Noodle Salad Bowls<small>Card 8 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">8 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-08.jpg')">
+      <img src="images/page-08.jpg" alt="Build Card - Bun Noodle Salad Bowls" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      BBQ Chicken · Lemongrass Beef · Roast Pork Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu & Veg Spring Rolls (V) · Crispy Flathead
+      <a class="back" href="#c8">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d9">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🍚</div>
+        <div class="title">Cơm — Rice Salad Bowls<small>Card 9 of 10</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact gold">Bottom → Up</div>
+        <div class="fact">8 variants</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-09.jpg')">
+      <img src="images/page-09.jpg" alt="Build Card - Com Rice Salad Bowls" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      BBQ Chicken · Lemongrass Beef · Roast Pork & Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu & Spring Roll (V) · Crispy Flathead
+      <a class="back" href="#c9">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<section class="card-section" id="d10">
+  <div class="section-inner">
+    <div class="section-bar">
+      <div class="row1">
+        <div class="icon">🧂</div>
+        <div class="title">Dressing Station<small>Card 10 of 10 · All Formats</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact">12 sub-formats</div>
+      </div>
+    </div>
+    <div class="img-wrap" onclick="openLightbox('images/page-10.jpg')">
+      <img src="images/page-10.jpg" alt="Build Card - Dressing Station" loading="lazy">
+      <div class="zoom-hint">🔍 Tap to zoom</div>
+    </div>
+    <div class="section-footer">
+      Garnish reference for Cơm · Bún · Gỏi · Phở · Bao · Bún Bò Huế · Chicken Curry — bowl & cup sizes
+      <a class="back" href="#c10">↑ Back to card feed</a>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  Built from "Roll'd Updated Build Card — A4 Landscape V10, June 2026"<br>Reference only — always confirm against the current printed card in-store.
+</footer>
+
+</div>
+
+<!-- ===================== NAV DRAWER ===================== -->
+<div class="scrim" id="scrim" onclick="document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('open');"></div>
+<nav class="drawer" id="drawer">
+  <button type="button" class="drawer-close" onclick="document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('open');" aria-label="Close menu">✕</button>
+  <div class="drawer-title">Roll'd SA Manual</div>
+  <div class="drawer-sub">V10 · June 2026</div>
+  <ul class="drawer-list">
+
+    <li data-main>
+      <button class="drawer-row" data-toggle>
+        <span class="badge">🥢</span>
+        <span class="label">Fresh Rolls</span>
+        <span class="chev">›</span>
+      </button>
+      <ul class="sub-list">
+        <li><a href="#d1" data-nav>Sesame & Low Carb</a></li>
+        <li><a href="#d2" data-nav>Original</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <a class="drawer-row" href="#d3" data-nav>
+        <span class="badge">🥖</span>
+        <span class="label">Bánh Mì</span>
+        <span class="chev">›</span>
+      </a>
+    </li>
+
+    <li>
+      <a class="drawer-row" href="#d4" data-nav>
+        <span class="badge">🥟</span>
+        <span class="label">Bao</span>
+        <span class="chev">›</span>
+      </a>
+    </li>
+
+    <li data-main>
+      <button class="drawer-row" data-toggle>
+        <span class="badge">🍜</span>
+        <span class="label">Noodle Soups</span>
+        <span class="chev">›</span>
+      </button>
+      <ul class="sub-list">
+        <li><a href="#d5" data-nav>Bowls</a></li>
+        <li><a href="#d6" data-nav>Cups (Takeaway)</a></li>
+      </ul>
+    </li>
+
+    <li data-main>
+      <button class="drawer-row" data-toggle>
+        <span class="badge">🥗</span>
+        <span class="label">Salad Bowls</span>
+        <span class="chev">›</span>
+      </button>
+      <ul class="sub-list">
+        <li><a href="#d7" data-nav>Gỏi — Viet Salad</a></li>
+        <li><a href="#d8" data-nav>Bún — Noodle Salad</a></li>
+        <li><a href="#d9" data-nav>Cơm — Rice Salad</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <a class="drawer-row" href="#d10" data-nav>
+        <span class="badge">🧂</span>
+        <span class="label">Dressing Station</span>
+        <span class="chev">›</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+  <img id="lightbox-img" src="" alt="zoomed build card">
+  <div class="lightbox-hint">Pinch or scroll to zoom · Tap ✕ to close</div>
+</div>
+
+<script>
+  function openLightbox(src){
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e){
+    if(e.target.id === 'lightbox' || e.target.closest('.lightbox-close')){
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // progress dots follow the swipe feed
+  const feed = document.getElementById('feed');
+  const feedCards = document.querySelectorAll('.feed-card[id^="c"]');
+  const dots = document.querySelectorAll('#dots a');
+  const dotsWrap = document.getElementById('dots');
+
+  const feedObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.id;
+        dots.forEach(d=>d.classList.toggle('active', d.dataset.t === id));
+      }
+    });
+  }, {root:feed, threshold:0.6});
+  feedCards.forEach(c=>feedObs.observe(c));
+
+  // hide dots once user scrolls into the detail section (feed no longer scrollable context)
+  const detailsEl = document.getElementById('details');
+  const detailObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      dotsWrap.classList.toggle('hidden', entry.isIntersecting);
+    });
+  }, {threshold:0.05});
+  detailObs.observe(detailsEl);
+
+  // ============ NAV DRAWER ============
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const scrim = document.getElementById('scrim');
+  const drawer = document.getElementById('drawer');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    scrim.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    scrim.classList.remove('open');
+  }
+  hamburgerBtn.addEventListener('click', openDrawer);
+  scrim.addEventListener('click', closeDrawer);
+
+  // accordion: main items with subs (Fresh Rolls, Noodle Soups, Salad Bowls)
+  document.querySelectorAll('.drawer-row[data-toggle]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const li = btn.closest('li');
+      const wasOpen = li.classList.contains('open');
+      document.querySelectorAll('.drawer-list > li[data-main]').forEach(el=>el.classList.remove('open'));
+      if(!wasOpen) li.classList.add('open');
+    });
+  });
+
+  // any leaf link closes the drawer after navigating
+  document.querySelectorAll('[data-nav]').forEach(a=>{
+    a.addEventListener('click', ()=> setTimeout(closeDrawer, 250));
+  });
+</script>
+
+</body>
+</html>
