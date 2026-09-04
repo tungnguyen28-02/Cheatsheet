@@ -26,7 +26,6 @@
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
-
   /* ============ HERO (landing page) ============ */
   .cover{
     height:100dvh;
@@ -56,7 +55,6 @@
   .cover .deco.d1{ top:-70px; left:-90px; transform:rotate(-18deg); }
   .cover .deco.d2{ bottom:-110px; right:-100px; font-size:300px; transform:rotate(12deg); opacity:0.09; }
   .cover .deco.d3{ top:38%; right:-60px; font-size:180px; transform:rotate(-8deg); opacity:0.08; }
-
   .hamburger{
     position:fixed;
     top:calc(18px + env(safe-area-inset-top));
@@ -78,7 +76,6 @@
     pointer-events:auto;
   }
   .hamburger:active{ background:rgba(0,0,0,0.55); }
-
   .cover-eyebrow{
     font-size:12px;
     letter-spacing:2.5px;
@@ -127,7 +124,6 @@
     0%,100%{ transform:translateY(0); opacity:.6;}
     50%{ transform:translateY(8px); opacity:1;}
   }
-
   /* ============ NAV DRAWER ============ */
   .scrim{
     position:fixed;
@@ -140,7 +136,6 @@
     transition:opacity .25s ease;
   }
   .scrim.open{ opacity:1; pointer-events:auto; }
-
   .drawer{
     position:fixed;
     top:0; right:0; bottom:0;
@@ -241,7 +236,21 @@
     margin-right:-2px;
   }
   .sub-list a:active{ color:#fff; }
-
+  /* drawer: action item (job request) sits apart from the build cards */
+  .drawer-list > li.drawer-action{
+    margin-top:16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    border-bottom:none;
+  }
+  .drawer-list > li.drawer-action .badge{ background:var(--red); }
+  .drawer-list > li.drawer-action .label small{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    color:rgba(255,255,255,0.5);
+    letter-spacing:0.3px;
+    margin-top:2px;
+  }
   /* ============ PROGRESS DOTS ============ */
   .dots{
     position:fixed;
@@ -264,7 +273,6 @@
     background:var(--gold);
     transform:scale(1.5);
   }
-
   /* ============ SWIPE FEED (cover cards per build card) ============ */
   .feed{
     scroll-snap-type:y mandatory;
@@ -344,7 +352,6 @@
   .feed-card:nth-child(even){
     background:linear-gradient(165deg,#0a3f2e 0%, #0d5640 100%);
   }
-
   /* ============ DETAIL HEADER ============ */
   .detail-head{
     padding:44px 20px 8px;
@@ -370,7 +377,6 @@
     font-size:13.5px;
     margin-top:8px;
   }
-
   /* ============ LEGEND ============ */
   .legend{
     max-width:720px;
@@ -406,7 +412,6 @@
     font-size:12.5px;
     color:var(--muted);
   }
-
   /* ============ DETAIL CARDS ============ */
   section.card-section{
     max-width:720px;
@@ -466,7 +471,6 @@
     white-space:nowrap;
   }
   .fact.gold{ background:var(--gold); color:#3a2c00; }
-
   .img-wrap{
     background:#f4f0e6;
     padding:10px;
@@ -503,7 +507,85 @@
     color:var(--green-dark);
     font-size:12.5px;
   }
-
+  /* ============ JOB REQUEST FORM ============ */
+  .section-bar.request{ background:linear-gradient(160deg,#7d1410 0%, var(--red) 100%); }
+  .section-bar.request .title{ padding-right:52px; }
+  .form-intro{ padding:16px 18px 4px; font-size:13px; line-height:1.55; color:var(--muted); }
+  .job-form{ padding:14px 18px 20px; display:grid; gap:15px; }
+  .field{ display:grid; gap:6px; }
+  .field label{
+    font-size:11.5px;
+    font-weight:800;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--green-dark);
+  }
+  .field label .req{ color:var(--red); }
+  .field .hint{ font-size:11.5px; color:var(--muted); }
+  .field input,
+  .field select,
+  .field textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:16px;
+    color:var(--text);
+    background:#faf8f3;
+    border:1.5px solid #e4ddcc;
+    border-radius:12px;
+    padding:12px 13px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field textarea{ min-height:118px; resize:vertical; line-height:1.5; }
+  .field select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230c4b36' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:36px;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    outline:none;
+    border-color:var(--green);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(14,92,66,0.13);
+  }
+  .field.invalid input,
+  .field.invalid select,
+  .field.invalid textarea{ border-color:var(--red); background:#fff6f5; }
+  .field .err-msg{ display:none; font-size:11.5px; font-weight:700; color:var(--red); }
+  .field.invalid .err-msg{ display:block; }
+  .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+  .send-btn{
+    margin-top:2px;
+    width:100%;
+    font-family:inherit;
+    font-size:15.5px;
+    font-weight:800;
+    color:#fff;
+    background:var(--green-dark);
+    border:none;
+    border-radius:999px;
+    padding:16px 20px;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:transform .12s ease, background .2s ease, opacity .2s ease;
+  }
+  .send-btn:active{ transform:scale(0.985); background:#093c2b; }
+  .send-btn[disabled]{ opacity:0.55; cursor:default; }
+  .form-status{
+    display:none;
+    border-radius:12px;
+    padding:13px 14px;
+    font-size:13px;
+    font-weight:600;
+    line-height:1.5;
+  }
+  .form-status.show{ display:block; }
+  .form-status.ok{ background:var(--green-light); color:var(--green-dark); border:1px solid #bcd9c9; }
+  .form-status.err{ background:#fdecea; color:#8d1712; border:1px solid #f3c2be; }
   /* ============ LIGHTBOX ============ */
   .lightbox{
     position:fixed;
@@ -546,7 +628,6 @@
     padding:6px 12px;
     border-radius:999px;
   }
-
   footer.page-footer{
     text-align:center;
     color:var(--muted);
@@ -554,21 +635,16 @@
     padding:26px 20px 20px;
     line-height:1.5;
   }
-
   @media (min-width:720px){
     .feed-card{ padding-left:56px; padding-right:56px; }
   }
 </style>
 </head>
 <body>
-
 <div id="top"></div>
-
 <button type="button" class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="document.getElementById('drawer').classList.add('open');document.getElementById('scrim').classList.add('open');">☰</button>
-
 <!-- ===================== SWIPE FEED ===================== -->
 <div class="feed" id="feed">
-
   <div class="cover feed-card">
     <span class="deco d1">🥢</span>
     <span class="deco d2">🍜</span>
@@ -579,11 +655,10 @@
     <div class="cover-sub">Fresh Rolls · Bánh Mì · Bao<br>Noodle Soups · Salad Bowls · Dressing Station</div>
     <div class="swipe-hint">Scroll or click Over View<span class="arrow">↓</span></div>
   </div>
-
   <div class="feed-card" id="c1">
     <div class="num">Card 1 · 10</div>
     <div class="emoji-big">🥗</div>
-    <h2>SESAME & LOW CARB ROLLS</h2>
+    <h2>SESAME &amp; LOW CARB ROLLS</h2>
     <p class="teaser">🥢 Sesame-crusted rice paper rolls — 7 proteins, one exact 110g target every time.</p>
     <div class="tags">
       <span class="tag">🍚 Rice Paper</span>
@@ -593,12 +668,11 @@
     </div>
     <a class="cta" href="#d1">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c2">
     <div class="num">Card 2 · 10</div>
     <div class="emoji-big">🌯</div>
     <h2>ORIGINAL FRESH ROLLS</h2>
-    <p class="teaser">🥑 The OG lineup — avocado, prawn, beef & more, same tight build on every roll.</p>
+    <p class="teaser">🥑 The OG lineup — avocado, prawn, beef &amp; more, same tight build on every roll.</p>
     <div class="tags">
       <span class="tag">🥑 Avocado</span>
       <span class="tag">🍤 Prawn</span>
@@ -607,12 +681,11 @@
     </div>
     <a class="cta" href="#d2">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c3">
     <div class="num">Card 3 · 10</div>
     <div class="emoji-big">🥖</div>
     <h2>BÁNH MÌ</h2>
-    <p class="teaser">🥖 Build from the bread up — mayo, pate, pickled carrot, protein, finish with chilli & herbs.</p>
+    <p class="teaser">🥖 Build from the bread up — mayo, pate, pickled carrot, protein, finish with chilli &amp; herbs.</p>
     <div class="tags">
       <span class="tag">🧈 Pate</span>
       <span class="tag">🥕 Pickled Carrot</span>
@@ -621,7 +694,6 @@
     </div>
     <a class="cta" href="#d3">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c4">
     <div class="num">Card 4 · 10</div>
     <div class="emoji-big">🥟</div>
@@ -634,12 +706,11 @@
     </div>
     <a class="cta" href="#d4">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c5">
     <div class="num">Card 5 · 10</div>
     <div class="emoji-big">🍜</div>
     <h2>NOODLE SOUPS — BOWLS</h2>
-    <p class="teaser">🍜 Phở, Bún Bò Huế & curry — broth, protein, noodles, dressed exactly to spec.</p>
+    <p class="teaser">🍜 Phở, Bún Bò Huế &amp; curry — broth, protein, noodles, dressed exactly to spec.</p>
     <div class="tags">
       <span class="tag">🍜 Phở Noodles</span>
       <span class="tag">🌶️ BBH Paste</span>
@@ -648,7 +719,6 @@
     </div>
     <a class="cta" href="#d5">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c6">
     <div class="num">Card 6 · 10</div>
     <div class="emoji-big">🥤</div>
@@ -661,7 +731,6 @@
     </div>
     <a class="cta" href="#d6">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c7">
     <div class="num">Card 7 · 10</div>
     <div class="emoji-big">🥙</div>
@@ -674,7 +743,6 @@
     </div>
     <a class="cta" href="#d7">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c8">
     <div class="num">Card 8 · 10</div>
     <div class="emoji-big">🍲</div>
@@ -682,12 +750,11 @@
     <p class="teaser">🍲 Vermicelli, fresh veg, 8 proteins — nuoc mam always served on the side.</p>
     <div class="tags">
       <span class="tag">🍜 Bún Noodles</span>
-      <span class="tag">🥬 Lettuce & Carrot</span>
+      <span class="tag">🥬 Lettuce &amp; Carrot</span>
       <span class="tag">⬆️ Bottom → Up</span>
     </div>
     <a class="cta" href="#d8">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c9">
     <div class="num">Card 9 · 10</div>
     <div class="emoji-big">🍚</div>
@@ -700,7 +767,6 @@
     </div>
     <a class="cta" href="#d9">View Full Card ›</a>
   </div>
-
   <div class="feed-card" id="c10">
     <div class="num">Card 10 · 10</div>
     <div class="emoji-big">🧂</div>
@@ -708,13 +774,11 @@
     <p class="teaser">🧂 Every garnish, every format — bowl vs cup portions side by side, one reference.</p>
     <div class="tags">
       <span class="tag">🧂 12 Formats</span>
-      <span class="tag">🌿 Herbs & Shallots</span>
+      <span class="tag">🌿 Herbs &amp; Shallots</span>
     </div>
     <a class="cta" href="#d10">View Full Card ›</a>
   </div>
-
 </div>
-
 <div class="dots" id="dots">
   <a href="#c1" data-t="c1"></a>
   <a href="#c2" data-t="c2"></a>
@@ -727,21 +791,18 @@
   <a href="#c9" data-t="c9"></a>
   <a href="#c10" data-t="c10"></a>
 </div>
-
 <!-- ===================== DETAIL PAGES ===================== -->
 <div id="details">
-
 <div class="detail-head">
   <div class="eyebrow">Full Build Cards</div>
   <h2>Read Every Gram, Right</h2>
   <p>Tap any image to zoom — pinch to read exact weights on the line.</p>
 </div>
-
 <div class="legend">
   <div class="legend-box">
     <div class="legend-row">
       <div class="ic">⬆️</div>
-      <div class="tx"><b>Start from bottom, up</b><span>Bánh mì, bao, soups, gỏi, bún & cơm are built stacking from the base container upward — always follow that order.</span></div>
+      <div class="tx"><b>Start from bottom, up</b><span>Bánh mì, bao, soups, gỏi, bún &amp; cơm are built stacking from the base container upward — always follow that order.</span></div>
     </div>
     <div class="legend-row">
       <div class="ic">🔀</div>
@@ -753,13 +814,12 @@
     </div>
   </div>
 </div>
-
 <section class="card-section" id="d1">
   <div class="section-inner">
     <div class="section-bar">
       <div class="row1">
         <div class="icon">🥗</div>
-        <div class="title">Fresh Rolls — Sesame & Low Carb<small>Card 1 of 10</small></div>
+        <div class="title">Fresh Rolls — Sesame &amp; Low Carb<small>Card 1 of 10</small></div>
       </div>
       <div class="facts">
         <div class="fact gold">110g</div>
@@ -768,7 +828,7 @@
       </div>
     </div>
     <div class="img-wrap" onclick="openLightbox('images/page-01.jpg')">
-      <img src="images/page-01.jpg" alt="Build Card - Fresh Rolls Sesame & Low Carb" loading="lazy">
+      <img src="images/page-01.jpg" alt="Build Card - Fresh Rolls Sesame &amp; Low Carb" loading="lazy">
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
@@ -777,7 +837,6 @@
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d2">
   <div class="section-inner">
     <div class="section-bar">
@@ -796,12 +855,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      Avocado · Crispy Chicken & Avo · Poached Chicken & Avo · Crispy Flathead & Avo · Garlic Prawn · Lemongrass Beef · Pork & Prawn
+      Avocado · Crispy Chicken &amp; Avo · Poached Chicken &amp; Avo · Crispy Flathead &amp; Avo · Garlic Prawn · Lemongrass Beef · Pork &amp; Prawn
       <a class="back" href="#c2">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d3">
   <div class="section-inner">
     <div class="section-bar">
@@ -819,12 +877,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      BBQ Chicken · Roast Pork & Crackling · Lemongrass Beef · Crispy Chicken · LG Chilli Chicken · Tofu (V) · Crispy Flathead
+      BBQ Chicken · Roast Pork &amp; Crackling · Lemongrass Beef · Crispy Chicken · LG Chilli Chicken · Tofu (V) · Crispy Flathead
       <a class="back" href="#c3">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d4">
   <div class="section-inner">
     <div class="section-bar">
@@ -842,12 +899,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      BBQ / LG Chilli Chicken · Lemongrass Beef · Roast Pork & Crackling · Crispy Chicken · Crispy Prawns · Tofu (V) · Crispy Flathead
+      BBQ / LG Chilli Chicken · Lemongrass Beef · Roast Pork &amp; Crackling · Crispy Chicken · Crispy Prawns · Tofu (V) · Crispy Flathead
       <a class="back" href="#c4">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d5">
   <div class="section-inner">
     <div class="section-bar">
@@ -865,12 +921,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      Phở Rare Beef · Poached Chicken · Mixed Beef & Chicken · Seafood · Mushroom & Tofu · BBH Spicy Beef · Curry Chicken
+      Phở Rare Beef · Poached Chicken · Mixed Beef &amp; Chicken · Seafood · Mushroom &amp; Tofu · BBH Spicy Beef · Curry Chicken
       <a class="back" href="#c5">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d6">
   <div class="section-inner">
     <div class="section-bar">
@@ -893,7 +948,6 @@
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d7">
   <div class="section-inner">
     <div class="section-bar">
@@ -911,12 +965,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      Poached Chicken · Lemongrass Beef · Roast Pork & Prawn · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Prawns · Tofu (V) · Crispy Flathead
+      Poached Chicken · Lemongrass Beef · Roast Pork &amp; Prawn · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Prawns · Tofu (V) · Crispy Flathead
       <a class="back" href="#c7">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d8">
   <div class="section-inner">
     <div class="section-bar">
@@ -934,12 +987,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      BBQ Chicken · Lemongrass Beef · Roast Pork Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu & Veg Spring Rolls (V) · Crispy Flathead
+      BBQ Chicken · Lemongrass Beef · Roast Pork Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu &amp; Veg Spring Rolls (V) · Crispy Flathead
       <a class="back" href="#c8">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d9">
   <div class="section-inner">
     <div class="section-bar">
@@ -957,12 +1009,11 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      BBQ Chicken · Lemongrass Beef · Roast Pork & Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu & Spring Roll (V) · Crispy Flathead
+      BBQ Chicken · Lemongrass Beef · Roast Pork &amp; Crackling · Crispy Chicken · Crispy Chicken Wings · LG Chilli Chicken · Tofu &amp; Spring Roll (V) · Crispy Flathead
       <a class="back" href="#c9">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
 <section class="card-section" id="d10">
   <div class="section-inner">
     <div class="section-bar">
@@ -979,18 +1030,70 @@
       <div class="zoom-hint">🔍 Tap to zoom</div>
     </div>
     <div class="section-footer">
-      Garnish reference for Cơm · Bún · Gỏi · Phở · Bao · Bún Bò Huế · Chicken Curry — bowl & cup sizes
+      Garnish reference for Cơm · Bún · Gỏi · Phở · Bao · Bún Bò Huế · Chicken Curry — bowl &amp; cup sizes
       <a class="back" href="#c10">↑ Back to card feed</a>
     </div>
   </div>
 </section>
-
+<!-- ===================== SUBMIT A JOB REQUEST ===================== -->
+<section class="card-section" id="jobreq">
+  <div class="section-inner">
+    <div class="section-bar request">
+      <div class="row1">
+        <div class="icon">🛠️</div>
+        <div class="title">Submit a Job Request<small>Maintenance · Equipment · Repairs</small></div>
+      </div>
+      <div class="facts">
+        <div class="fact">Takes 30 seconds</div>
+        <div class="fact">Goes straight to management</div>
+      </div>
+    </div>
+    <p class="form-intro">
+      Something broken, running low, or needs fixing? Fill this in and hit send — it lands
+      in the job list immediately. Be specific: what it is, where it is, and how bad it is.
+    </p>
+    <form class="job-form" id="jobForm" novalidate>
+      <div class="field" id="f-store">
+        <label for="jr-store">Store <span class="req">*</span></label>
+        <select id="jr-store" name="store" required>
+          <option value="">Select your store…</option>
+          <option>Marion</option>
+          <option>Burnside Village</option>
+          <option>West Lakes</option>
+          <option>Bateau Bay</option>
+        </select>
+        <span class="err-msg">Pick the store you're working at.</span>
+      </div>
+      <div class="field" id="f-name">
+        <label for="jr-name">Your name <span class="req">*</span></label>
+        <input type="text" id="jr-name" name="name" autocomplete="name"
+               placeholder="e.g. Sarah T" maxlength="60" required>
+        <span class="err-msg">We need to know who to follow up with.</span>
+      </div>
+      <div class="field" id="f-issue">
+        <label for="jr-issue">What's the job? <span class="req">*</span></label>
+        <textarea id="jr-issue" name="issue" maxlength="1200" required
+                  placeholder="e.g. Front fryer isn't holding temperature — sitting around 140°C instead of 175°C. Started this morning, still cooking but slow."></textarea>
+        <span class="hint">Include where it is and when it started. Photos can follow by text.</span>
+        <span class="err-msg">Give us at least a sentence so we know what we're looking at.</span>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for="jr-website">Leave this blank</label>
+        <input type="text" id="jr-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <button type="submit" class="send-btn" id="jrSend">Send Request</button>
+      <div class="form-status" id="jrStatus" role="status" aria-live="polite"></div>
+    </form>
+    <div class="section-footer">
+      Urgent safety issues — gas, electrical, injury — call the manager directly. Don't use this form.
+      <a class="back" href="#top">↑ Back to top</a>
+    </div>
+  </div>
+</section>
 <footer class="page-footer">
   Built from "Roll'd Updated Build Card — A4 Landscape V10, June 2026"<br>Reference only — always confirm against the current printed card in-store.
 </footer>
-
 </div>
-
 <!-- ===================== NAV DRAWER ===================== -->
 <div class="scrim" id="scrim" onclick="document.getElementById('drawer').classList.remove('open');document.getElementById('scrim').classList.remove('open');"></div>
 <nav class="drawer" id="drawer">
@@ -998,7 +1101,6 @@
   <div class="drawer-title">Roll'd SA Manual</div>
   <div class="drawer-sub">V10 · June 2026</div>
   <ul class="drawer-list">
-
     <li data-main>
       <button class="drawer-row" data-toggle>
         <span class="badge">🥢</span>
@@ -1006,11 +1108,10 @@
         <span class="chev">›</span>
       </button>
       <ul class="sub-list">
-        <li><a href="#d1" data-nav>Sesame & Low Carb</a></li>
+        <li><a href="#d1" data-nav>Sesame &amp; Low Carb</a></li>
         <li><a href="#d2" data-nav>Original</a></li>
       </ul>
     </li>
-
     <li>
       <a class="drawer-row" href="#d3" data-nav>
         <span class="badge">🥖</span>
@@ -1018,7 +1119,6 @@
         <span class="chev">›</span>
       </a>
     </li>
-
     <li>
       <a class="drawer-row" href="#d4" data-nav>
         <span class="badge">🥟</span>
@@ -1026,7 +1126,6 @@
         <span class="chev">›</span>
       </a>
     </li>
-
     <li data-main>
       <button class="drawer-row" data-toggle>
         <span class="badge">🍜</span>
@@ -1038,7 +1137,6 @@
         <li><a href="#d6" data-nav>Cups (Takeaway)</a></li>
       </ul>
     </li>
-
     <li data-main>
       <button class="drawer-row" data-toggle>
         <span class="badge">🥗</span>
@@ -1051,7 +1149,6 @@
         <li><a href="#d9" data-nav>Cơm — Rice Salad</a></li>
       </ul>
     </li>
-
     <li>
       <a class="drawer-row" href="#d10" data-nav>
         <span class="badge">🧂</span>
@@ -1059,17 +1156,21 @@
         <span class="chev">›</span>
       </a>
     </li>
-
+    <li class="drawer-action">
+      <a class="drawer-row" href="#jobreq" data-nav>
+        <span class="badge">🛠️</span>
+        <span class="label">Submit a Job Request<small>Report something broken</small></span>
+        <span class="chev">›</span>
+      </a>
+    </li>
   </ul>
 </nav>
-
 <!-- ===================== LIGHTBOX ===================== -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
   <img id="lightbox-img" src="" alt="zoomed build card">
   <div class="lightbox-hint">Pinch or scroll to zoom · Tap ✕ to close</div>
 </div>
-
 <script>
   function openLightbox(src){
     document.getElementById('lightbox-img').src = src;
@@ -1082,13 +1183,11 @@
       document.body.style.overflow = '';
     }
   }
-
   // progress dots follow the swipe feed
   const feed = document.getElementById('feed');
   const feedCards = document.querySelectorAll('.feed-card[id^="c"]');
   const dots = document.querySelectorAll('#dots a');
   const dotsWrap = document.getElementById('dots');
-
   const feedObs = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
@@ -1098,8 +1197,7 @@
     });
   }, {root:feed, threshold:0.6});
   feedCards.forEach(c=>feedObs.observe(c));
-
-  // hide dots once user scrolls into the detail section (feed no longer scrollable context)
+  // hide dots once user scrolls into the detail section
   const detailsEl = document.getElementById('details');
   const detailObs = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
@@ -1107,12 +1205,10 @@
     });
   }, {threshold:0.05});
   detailObs.observe(detailsEl);
-
   // ============ NAV DRAWER ============
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const scrim = document.getElementById('scrim');
   const drawer = document.getElementById('drawer');
-
   function openDrawer(){
     drawer.classList.add('open');
     scrim.classList.add('open');
@@ -1123,8 +1219,7 @@
   }
   hamburgerBtn.addEventListener('click', openDrawer);
   scrim.addEventListener('click', closeDrawer);
-
-  // accordion: main items with subs (Fresh Rolls, Noodle Soups, Salad Bowls)
+  // accordion: main items with subs
   document.querySelectorAll('.drawer-row[data-toggle]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const li = btn.closest('li');
@@ -1133,35 +1228,17 @@
       if(!wasOpen) li.classList.add('open');
     });
   });
-
   // any leaf link closes the drawer after navigating
   document.querySelectorAll('[data-nav]').forEach(a=>{
     a.addEventListener('click', ()=> setTimeout(closeDrawer, 250));
   });
-  /* drawer: action item (job request) sits apart from the build cards */
-  .drawer-list > li.drawer-action{
-    margin-top:16px;
-    border-top:1px solid rgba(255,255,255,0.08);
-    border-bottom:none;
-  }
-  .drawer-list > li.drawer-action .badge{ background:var(--red); }
-  .drawer-list > li.drawer-action .label small{
-    display:block;
-    font-size:11px;
-    font-weight:600;
-    color:rgba(255,255,255,0.5);
-    letter-spacing:0.3px;
-    margin-top:2px;
-  }
   // ============ JOB REQUEST FORM ============
   (function(){
     const JOB_WEBHOOK_URL = "https://floral-cherry-54c7.tung-nguyen28feb.workers.dev";
-
     const form   = document.getElementById('jobForm');
     const btn    = document.getElementById('jrSend');
     const status = document.getElementById('jrStatus');
     if(!form) return;
-
     const fields = {
       store: {el: document.getElementById('jr-store'), wrap: document.getElementById('f-store'),
               ok: v => v.trim().length > 0},
@@ -1170,7 +1247,6 @@
       issue: {el: document.getElementById('jr-issue'), wrap: document.getElementById('f-issue'),
               ok: v => v.trim().length >= 10}
     };
-
     function setStatus(kind, msg){
       status.className = 'form-status show ' + kind;
       status.textContent = msg;
@@ -1179,15 +1255,12 @@
       status.className = 'form-status';
       status.textContent = '';
     }
-
-    // clear a field's error as soon as the person fixes it
     Object.values(fields).forEach(f=>{
       const evt = f.el.tagName === 'SELECT' ? 'change' : 'input';
       f.el.addEventListener(evt, ()=>{
         if(f.ok(f.el.value)) f.wrap.classList.remove('invalid');
       });
     });
-
     function validate(){
       let firstBad = null;
       Object.values(fields).forEach(f=>{
@@ -1202,20 +1275,16 @@
       }
       return true;
     }
-
     form.addEventListener('submit', async function(e){
       e.preventDefault();
       clearStatus();
-
       // bot filled the hidden field — pretend it worked, send nothing
       if(document.getElementById('jr-website').value.trim() !== ''){
         setStatus('ok', 'Thanks — your request has been sent.');
         form.reset();
         return;
       }
-
       if(!validate()) return;
-
       const payload = new URLSearchParams({
         store:       fields.store.el.value.trim(),
         name:        fields.name.el.value.trim(),
@@ -1223,27 +1292,20 @@
         submittedAt: new Date().toISOString(),
         source:      'Roll’d SA Manual'
       });
-
       btn.disabled = true;
       const original = btn.textContent;
       btn.textContent = 'Sending…';
-
-      // don't leave staff staring at a spinner if the server never answers
       const ctrl = new AbortController();
       const timer = setTimeout(()=>ctrl.abort(), 15000);
-
       try{
         const res = await fetch(JOB_WEBHOOK_URL, {
           method: 'POST',
-          // form-encoded keeps this a "simple" request — no CORS preflight
           headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
           body: payload.toString(),
           signal: ctrl.signal
         });
         clearTimeout(timer);
-
         if(!res.ok) throw new Error('HTTP ' + res.status);
-
         setStatus('ok', '✅ Sent. ' + fields.name.el.value.trim() +
                         ', your job request is logged for ' + fields.store.el.value + '. Tung will pick it up.');
         form.reset();
@@ -1258,8 +1320,6 @@
       }
     });
   })();
- 
 </script>
-
 </body>
 </html>
