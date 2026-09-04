@@ -1138,8 +1138,25 @@
   document.querySelectorAll('[data-nav]').forEach(a=>{
     a.addEventListener('click', ()=> setTimeout(closeDrawer, 250));
   });
-/ ============ JOB REQUEST FORM ============
+  /* drawer: action item (job request) sits apart from the build cards */
+  .drawer-list > li.drawer-action{
+    margin-top:16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    border-bottom:none;
+  }
+  .drawer-list > li.drawer-action .badge{ background:var(--red); }
+  .drawer-list > li.drawer-action .label small{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    color:rgba(255,255,255,0.5);
+    letter-spacing:0.3px;
+    margin-top:2px;
+  }
+  // ============ JOB REQUEST FORM ============
   (function(){
+    const JOB_WEBHOOK_URL = "https://floral-cherry-54c7.tung-nguyen28feb.workers.dev";
+
     const form   = document.getElementById('jobForm');
     const btn    = document.getElementById('jrSend');
     const status = document.getElementById('jrStatus');
@@ -1199,17 +1216,12 @@
 
       if(!validate()) return;
 
-      if(!JOB_WEBHOOK_URL || JOB_WEBHOOK_URL.indexOf('https://floral-cherry-54c7.tung-nguyen28feb.workers.dev/') === 0){
-        setStatus('err', 'This form isn’t connected yet. Tell the manager the webhook URL is missing.');
-        return;
-      }
-
       const payload = new URLSearchParams({
-        store:      fields.store.el.value.trim(),
-        name:       fields.name.el.value.trim(),
-        issue:      fields.issue.el.value.trim(),
+        store:       fields.store.el.value.trim(),
+        name:        fields.name.el.value.trim(),
+        issue:       fields.issue.el.value.trim(),
         submittedAt: new Date().toISOString(),
-        source:     'Roll’d SA Manual'
+        source:      'Roll’d SA Manual'
       });
 
       btn.disabled = true;
@@ -1233,7 +1245,7 @@
         if(!res.ok) throw new Error('HTTP ' + res.status);
 
         setStatus('ok', '✅ Sent. ' + fields.name.el.value.trim() +
-                        ', your job request is logged for ' + fields.store.el.value + '. Someone will pick it up.');
+                        ', your job request is logged for ' + fields.store.el.value + '. Tung will pick it up.');
         form.reset();
         Object.values(fields).forEach(f=>f.wrap.classList.remove('invalid'));
       }catch(err){
@@ -1246,6 +1258,7 @@
       }
     });
   })();
+ 
 </script>
 
 </body>
