@@ -1138,7 +1138,115 @@
   document.querySelectorAll('[data-nav]').forEach(a=>{
     a.addEventListener('click', ()=> setTimeout(closeDrawer, 250));
   });
+/ ============ JOB REQUEST FORM ============
+  (function(){
+    const form   = document.getElementById('jobForm');
+    const btn    = document.getElementById('jrSend');
+    const status = document.getElementById('jrStatus');
+    if(!form) return;
+
+    const fields = {
+      store: {el: document.getElementById('jr-store'), wrap: document.getElementById('f-store'),
+              ok: v => v.trim().length > 0},
+      name:  {el: document.getElementById('jr-name'),  wrap: document.getElementById('f-name'),
+              ok: v => v.trim().length >= 2},
+      issue: {el: document.getElementById('jr-issue'), wrap: document.getElementById('f-issue'),
+              ok: v => v.trim().length >= 10}
+    };
+
+    function setStatus(kind, msg){
+      status.className = 'form-status show ' + kind;
+      status.textContent = msg;
+    }
+    function clearStatus(){
+      status.className = 'form-status';
+      status.textContent = '';
+    }
+
+    // clear a field's error as soon as the person fixes it
+    Object.values(fields).forEach(f=>{
+      const evt = f.el.tagName === 'SELECT' ? 'change' : 'input';
+      f.el.addEventListener(evt, ()=>{
+        if(f.ok(f.el.value)) f.wrap.classList.remove('invalid');
+      });
+    });
+
+    function validate(){
+      let firstBad = null;
+      Object.values(fields).forEach(f=>{
+        const good = f.ok(f.el.value);
+        f.wrap.classList.toggle('invalid', !good);
+        if(!good && !firstBad) firstBad = f;
+      });
+      if(firstBad){
+        firstBad.wrap.scrollIntoView({behavior:'smooth', block:'center'});
+        firstBad.el.focus({preventScroll:true});
+        return false;
+      }
+      return true;
+    }
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      clearStatus();
+
+      // bot filled the hidden field — pretend it worked, send nothing
+      if(document.getElementById('jr-website').value.trim() !== ''){
+        setStatus('ok', 'Thanks — your request has been sent.');
+        form.reset();
+        return;
+      }
+
+      if(!validate()) return;
+
+      if(!JOB_WEBHOOK_URL || JOB_WEBHOOK_URL.indexOf('https://floral-cherry-54c7.tung-nguyen28feb.workers.dev/') === 0){
+        setStatus('err', 'This form isn’t connected yet. Tell the manager the webhook URL is missing.');
+        return;
+      }
+
+      const payload = new URLSearchParams({
+        store:      fields.store.el.value.trim(),
+        name:       fields.name.el.value.trim(),
+        issue:      fields.issue.el.value.trim(),
+        submittedAt: new Date().toISOString(),
+        source:     'Roll’d SA Manual'
+      });
+
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Sending…';
+
+      // don't leave staff staring at a spinner if the server never answers
+      const ctrl = new AbortController();
+      const timer = setTimeout(()=>ctrl.abort(), 15000);
+
+      try{
+        const res = await fetch(JOB_WEBHOOK_URL, {
+          method: 'POST',
+          // form-encoded keeps this a "simple" request — no CORS preflight
+          headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+          body: payload.toString(),
+          signal: ctrl.signal
+        });
+        clearTimeout(timer);
+
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+
+        setStatus('ok', '✅ Sent. ' + fields.name.el.value.trim() +
+                        ', your job request is logged for ' + fields.store.el.value + '. Someone will pick it up.');
+        form.reset();
+        Object.values(fields).forEach(f=>f.wrap.classList.remove('invalid'));
+      }catch(err){
+        clearTimeout(timer);
+        setStatus('err', '⚠️ Couldn’t send — check your signal and try again. ' +
+                         'If it keeps failing, screenshot this and message the manager directly.');
+      }finally{
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    });
+  })();
 </script>
-const JOB_WEBHOOK_URL = "https://floral-cherry-54c7.tung-nguyen28feb.workers.dev/";
+
 </body>
 </html>
